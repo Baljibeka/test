@@ -1,9 +1,7 @@
-package repo;
+package com.example.test.repo;
 
-import model.Task;
+import com.example.test.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Collection;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 }

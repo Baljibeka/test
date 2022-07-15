@@ -1,4 +1,4 @@
-package model;
+package com.example.test.model;
 
 
 
@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+
 @Entity
 public class Project {
     @Id
@@ -15,11 +17,6 @@ public class Project {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    enum status{
-        NOTSTARTED,
-        ACTIVE,
-        COMPLETED
-    };
     @JsonIgnore
     String name;
 
@@ -27,12 +24,11 @@ public class Project {
 
     private LocalDateTime endDate;
 
-    @OneToOne
-    @JoinColumn(name = "task_id")
-    private Task task;
+    @OneToMany(mappedBy="project")
+    private Set<Task> tasks=new HashSet<>();
 
-    public Task getTask() {
-        return task;
+    public Set<Task> getTask() {
+        return tasks;
     }
 
     public Long getId() {
@@ -49,6 +45,32 @@ public class Project {
 
     public LocalDateTime getEndDate() {
         return endDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return id.equals(project.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Project(){
